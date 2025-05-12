@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "d5959310-9f81-4e7a-ab47-4ef8ace7885c",
+		"name": "Todo API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44617331",
+		"_collection_link": "https://hojinlim-2735846.postman.co/workspace/873d1b3c-bd6b-4412-885c-2808a038b8f4/collection/44617331-d5959310-9f81-4e7a-ab47-4ef8ace7885c?action=share&source=collection_link&creator=44617331"
+	},
+	"item": [
+		{
+			"name": "Create Todo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/todos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Todo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"todoId\": \"자동 추가\"\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호(등록되지만 response에는 제거 필요할 것으로 추측)\",\r\n    \"createdAt\": \"작성일(등록시간)\",\r\n    \"updatedAt\": \"변경일(등록시간)\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Get TodoList",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/todos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get TodoList",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos?writerName=name&updatedAt=date",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos"
+							],
+							"query": [
+								{
+									"key": "writerName",
+									"value": "name",
+									"description": "일치할 때(생략가능)"
+								},
+								{
+									"key": "updatedAt",
+									"value": "date",
+									"description": "YYYY-MM-DD, 날짜 기준으로 내림차순 정렬(생략가능)"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "[\r\n    {\r\n        todo object 1\r\n    },\r\n    {\r\n        todo object 2\r\n    },\r\n    {\r\n        todo object 3\r\n    },\r\n    ...\r\n]\r\n//비밀번호 제외한 todo object"
+				}
+			]
+		},
+		{
+			"name": "Get Todo",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Get Todo",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/todos/{todoId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos",
+								"{todoId}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"todoId\": \"url에 입력된 todoId\"\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"createdAt\": \"작성일\",\r\n    \"updatedAt\": \"변경일\"\r\n}\r\n// 비밀번호 제외"
+				}
+			]
+		},
+		{
+			"name": "Update Todo",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/todos/{todoId}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todos",
+						"{todoId}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update Todo",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"todo\": \"할일\",\r\n    \"password\": \"비밀번호\"\r\n}\r\nor\r\n{\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}\r\nor\r\n{\r\n    \"todo\": \"할일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos/{todoId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos",
+								"{todoId}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"todoId\": \"url에 입력된 todoId\"\r\n    \"todo\": \"(request에 todo가 있으면 수정된)할 일\",\r\n    \"writerName\": \"(request에 writerName이 있으면 수정된)작성자명\",\r\n    \"password\": \"비밀번호(일치하는지만 확인하고 response에는 제외할 예정)\",\r\n    \"createdAt\": \"작성일(변경없음)\",\r\n    \"updatedAt\": \"변경일(요청시간)\"\r\n}"
+				},
+				{
+					"name": "Update Todo",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"todo\": \"할 일\",\r\n    \"writerName\": \"작성자명\",\r\n    \"password\": \"비밀번호\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos/{todoId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos",
+								"{todoId}"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Password does not match\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Todo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/todos/{todoId}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"todos",
+						"{todoId}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete Todo",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"todoId\": \"todoId\",\r\n    \"password\": \"비밀번호\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos/{todoId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos",
+								"{todoId}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Delete Todo",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"todoId\": \"todoId\",\r\n    \"password\": \"비밀번호\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/todos/{todoId}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"todos",
+								"{todoId}"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Password does not match\"\r\n}"
+				}
+			]
+		}
+	]
+}

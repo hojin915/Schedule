@@ -1,0 +1,16 @@
+﻿Use Schedule;
+
+CREATE TABLE `Schedule` (
+	`todoId`    INT	NOT NULL,
+	`todo`	VARCHAR(200)	NULL,
+	`writerName`	VARCHAR(30)	NULL,
+	`createdAt`	DATETIME	NULL,
+	`updatedAt`	DATETIME	NULL,
+	`password`	VARCHAR(30)	NULL
+);
+
+ALTER TABLE `Schedule` ADD CONSTRAINT `PK_SCHEDULE` PRIMARY KEY (
+	`todoId`
+);
+
+ALTER TABLE Schedule MODIFY COLUMN todoId INT NOT NULL AUTO_INCREMENT;
