@@ -11,6 +11,7 @@ public class ScheduleResponseDto {
     private Long todoId;
     private String todo;
     private String writerName;
+    private Long writerId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,13 +23,23 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleResponseDto createSchedule(ScheduleRequestDto dto) {
-        Todo todo = new Todo(dto.getTodo(), dto.getWriterName(), dto.getPassword());
+        Todo todo = new Todo(dto.getTodo(), dto.getWriterName(), dto.getWriterId(), dto.getPassword());
         return scheduleRepository.createSchedule(todo);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedules() {
-        return scheduleRepository.findAllSchedules();
+    public List<ScheduleResponseDto> findAllSchedules(Long userId, LocalDate date) {
+        List<ScheduleResponseDto> result = scheduleRepository.findAllSchedules();
+        if(userId != null){
+            result = result.stream().filter(schedule -> schedule.getWriterId().equals(userId)).toList();
+        }
+        if(date != null){
+            result = result.stream()
+                    .filter(schedule -> schedule.getUpdatedAt().toLocalDate().isAfter(date))
+                    .toList();
+        }
+        result = result.stream().sorted(Comparator.comparing(a -> a.getUpdatedAt().toLocalDate())).toList();
+        return result;
     }
 
     @Override

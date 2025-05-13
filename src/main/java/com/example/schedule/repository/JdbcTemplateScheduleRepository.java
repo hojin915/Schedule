@@ -1,6 +1,5 @@
 package com.example.schedule.repository;
 
-import com.example.schedule.dto.InternalDto;
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
 import com.example.schedule.entity.Todo;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -37,13 +35,14 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("todo", todo.getTodo());
         parameters.put("writerName", todo.getWriterName());
+        parameters.put("userId", todo.getWriterId());
         parameters.put("password", todo.getPassword());
         parameters.put("createdAt", requestTime);
         parameters.put("updatedAt", requestTime);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new ScheduleResponseDto(key.longValue(), todo.getTodo(), todo.getWriterName(), requestTime, requestTime);
+        return new ScheduleResponseDto(key.longValue(), todo.getTodo(), todo.getWriterName(), todo.getWriterId(), requestTime, requestTime);
     }
 
     @Override
@@ -104,6 +103,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
                         rs.getLong("todoId"),
                         rs.getString("todo"),
                         rs.getString("writerName"),
+                        rs.getLong("userId"),
                         createdAt,
                         updatedAt
                 );
