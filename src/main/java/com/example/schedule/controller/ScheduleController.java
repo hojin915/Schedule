@@ -1,8 +1,11 @@
 package com.example.schedule.controller;
 
+import com.example.schedule.dto.PasswordRequestDto;
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
+import com.example.schedule.dto.FindSchedulesContext;
 import com.example.schedule.service.ScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +23,20 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto dto){
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody @Valid ScheduleRequestDto dto){
         System.out.println(dto.getWriterId());
         return new ResponseEntity<>(scheduleService.createSchedule(dto), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "2") int size,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) LocalDate date
     ){
-        return new ResponseEntity<>(scheduleService.findAllSchedules(userId, date), HttpStatus.OK);
+        FindSchedulesContext context = new FindSchedulesContext(page, size, userId, date);
+        return new ResponseEntity<>(scheduleService.findAllSchedules(context), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -46,7 +52,9 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSchedule(@PathVariable Long id){
-        scheduleService.deleteSchedule(id);
+    public ResponseEntity<Void> deleteSchedule(
+            @RequestBody PasswordRequestDto dto, @PathVariable Long id){
+        scheduleService.deleteSchedule(dto, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

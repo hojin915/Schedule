@@ -3,6 +3,7 @@ package com.example.schedule.controller;
 import com.example.schedule.dto.UserRequestDto;
 import com.example.schedule.dto.UserResponseDto;
 import com.example.schedule.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequestDto dto){
+    public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserRequestDto dto){
         return new ResponseEntity<>(userService.registerUser(dto), HttpStatus.CREATED);
     }
 

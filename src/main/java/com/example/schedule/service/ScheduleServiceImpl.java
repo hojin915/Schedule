@@ -1,15 +1,17 @@
 package com.example.schedule.service;
 
+import com.example.schedule.dto.PasswordRequestDto;
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
+import com.example.schedule.dto.FindSchedulesContext;
 import com.example.schedule.entity.Todo;
+import com.example.schedule.exception.NotFoundException;
+import com.example.schedule.exception.PasswordMismatchException;
 import com.example.schedule.repository.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,29 +30,38 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedules(Long userId, LocalDate date) {
+    public List<ScheduleResponseDto> findAllSchedules(FindSchedulesContext context) {
         List<ScheduleResponseDto> result = scheduleRepository.findAllSchedules();
-        if(userId != null){
-            result = result.stream().filter(schedule -> schedule.getWriterId().equals(userId)).toList();
+        if(context.getUserId() != null){
+            result = result.stream().filter(schedule -> schedule.getWriterId().equals(context.getUserId())).toList();
         }
-        if(date != null){
+        if(context.getDate() != null){
             result = result.stream()
-                    .filter(schedule -> schedule.getUpdatedAt().toLocalDate().isAfter(date))
+                    .filter(schedule -> schedule.getUpdatedAt().toLocalDate().isAfter(context.getDate()))
                     .toList();
         }
         result = result.stream().sorted(Comparator.comparing(a -> a.getUpdatedAt().toLocalDate())).toList();
+        int pageOffset = context.getOffset();
+        result = result.subList(pageOffset, pageOffset + context.getSize());
+        int totalResult = result.size();
+        int totalPages = (totalResult + context.getSize() - 1) / context.getSize(); // 전체 페이지 수 필요하면 사용
         return result;
     }
 
     @Override
     public ScheduleResponseDto findScheduleById(Long id) {
-        return scheduleRepository.findScheduleById(id);
+        ScheduleResponseDto result = scheduleRepository.findScheduleById(id);
+        if(result == null){
+            throw new NotFoundException("Schedule not found or already deleted");
+        } else{
+            return result;
+        }
     }
 
     @Override
     public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long id) {
         if(!dto.getPassword().equals(scheduleRepository.findPasswordById(id))){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Password does not match");
+            throw new PasswordMismatchException("Password mismatch");
         }
         if(dto.getTodo() != null && dto.getWriterName() != null){
             return scheduleRepository.updateSchedule(dto, id);
@@ -65,7 +76,10 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public void deleteSchedule(Long id) {
+    public void deleteSchedule(PasswordRequestDto dto, Long id) {
+        if(!dto.getPassword().equals(scheduleRepository.findPasswordById(id)) && scheduleRepository.findScheduleById(id) != null){
+            throw new PasswordMismatchException("Password mismatch");
+        }
         int deletedRow = scheduleRepository.deleteSchedule(id);
         if(deletedRow == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, id + "does not exist");
