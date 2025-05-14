@@ -33,7 +33,6 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public PageResponseDto<ScheduleResponseDto> findAllSchedules(FindSchedulesContext context) {
         List<ScheduleResponseDto> result = scheduleRepository.findAllSchedules();
-        int totalResults = result.size();
         if(context.getUserId() != null){
             result = result.stream()
                     .filter(schedule -> schedule.getWriterId().equals(context.getUserId()))
@@ -44,14 +43,16 @@ public class ScheduleServiceImpl implements ScheduleService{
                     .filter(schedule -> schedule.getUpdatedAt().toLocalDate().isAfter(context.getDate()))
                     .toList();
         }
+        // 필터링이 끝난 후 전체 항목 개수 계산
+        int totalResults = result.size();
         result = result.stream().sorted(Comparator.comparing(a -> a.getUpdatedAt().toLocalDate())).toList();
-        int pageOffset = context.getOffset();
+        int pageOffset = context.getOffset(); // 페이지 계산
         result = result.subList(pageOffset, pageOffset + context.getSize());
-        int totalPages = (totalResults + context.getSize() - 1) / context.getSize(); // 전체 페이지 수 필요하면 사용
+        int totalPages = (totalResults + context.getSize() - 1) / context.getSize(); // 전체 페이지 수
         if(totalResults < context.getSize()){
             return null;
         }
-        return new PageResponseDto<>(result, context.getPage(), context.getSize(), totalResults, totalPages);
+        return new PageResponseDto<>(result, pageOffset, context.getSize(), totalResults, totalPages);
     }
 
     @Override

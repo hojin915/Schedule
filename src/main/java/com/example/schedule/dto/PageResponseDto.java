@@ -1,6 +1,5 @@
 package com.example.schedule.dto;
 
-import com.example.schedule.dto.schedule.ScheduleResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,10 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 public class PageResponseDto<T> {
     private List<T> data;
-    private int page;
-    private int size;
-    private long totalItems;
-    private int totalPages;
+    private int page; // 리턴할 페이지
+    private int size; // 페이지 사이즈(항목 수)
+    private long totalItems; // 전체 항목 개수
+    private int totalPages; // 전체 페이지 수
 
     public PageResponseDto(PageResponseDto<T> dto) {
         this.data = dto.data;
