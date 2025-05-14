@@ -1,6 +1,6 @@
 package com.example.schedule.repository;
 
-import com.example.schedule.dto.UserResponseDto;
+import com.example.schedule.dto.user.UserResponseDto;
 import com.example.schedule.entity.User;
 
 import java.util.List;

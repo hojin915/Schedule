@@ -1,6 +1,10 @@
 package com.example.schedule.service;
 
 import com.example.schedule.dto.*;
+import com.example.schedule.dto.schedule.FindSchedulesContext;
+import com.example.schedule.dto.schedule.ScheduleRequestDto;
+import com.example.schedule.dto.schedule.ScheduleResponseDto;
+import com.example.schedule.dto.schedule.ScheduleUpdateRequestDto;
 import com.example.schedule.entity.Todo;
 import com.example.schedule.exception.NotFoundException;
 import com.example.schedule.exception.PasswordMismatchException;
@@ -27,8 +31,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedules(FindSchedulesContext context) {
+    public PageResponseDto<ScheduleResponseDto> findAllSchedules(FindSchedulesContext context) {
         List<ScheduleResponseDto> result = scheduleRepository.findAllSchedules();
+        int totalResults = result.size();
         if(context.getUserId() != null){
             result = result.stream()
                     .filter(schedule -> schedule.getWriterId().equals(context.getUserId()))
@@ -42,12 +47,11 @@ public class ScheduleServiceImpl implements ScheduleService{
         result = result.stream().sorted(Comparator.comparing(a -> a.getUpdatedAt().toLocalDate())).toList();
         int pageOffset = context.getOffset();
         result = result.subList(pageOffset, pageOffset + context.getSize());
-        int totalResult = result.size();
-        int totalPages = (totalResult + context.getSize() - 1) / context.getSize(); // 전체 페이지 수 필요하면 사용
-        if(totalResult < context.getSize()){
+        int totalPages = (totalResults + context.getSize() - 1) / context.getSize(); // 전체 페이지 수 필요하면 사용
+        if(totalResults < context.getSize()){
             return null;
         }
-        return result;
+        return new PageResponseDto<>(result, context.getPage(), context.getSize(), totalResults, totalPages);
     }
 
     @Override

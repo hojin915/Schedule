@@ -1,8 +1,7 @@
 package com.example.schedule.repository;
 
-import com.example.schedule.dto.ScheduleRequestDto;
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.dto.ScheduleUpdateRequestDto;
+import com.example.schedule.dto.schedule.ScheduleResponseDto;
+import com.example.schedule.dto.schedule.ScheduleUpdateRequestDto;
 import com.example.schedule.entity.Todo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

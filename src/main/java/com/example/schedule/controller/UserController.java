@@ -1,7 +1,7 @@
 package com.example.schedule.controller;
 
-import com.example.schedule.dto.UserRequestDto;
-import com.example.schedule.dto.UserResponseDto;
+import com.example.schedule.dto.user.UserRequestDto;
+import com.example.schedule.dto.user.UserResponseDto;
 import com.example.schedule.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

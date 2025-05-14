@@ -1,6 +1,10 @@
 package com.example.schedule.controller;
 
 import com.example.schedule.dto.*;
+import com.example.schedule.dto.schedule.FindSchedulesContext;
+import com.example.schedule.dto.schedule.ScheduleRequestDto;
+import com.example.schedule.dto.schedule.ScheduleResponseDto;
+import com.example.schedule.dto.schedule.ScheduleUpdateRequestDto;
 import com.example.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,19 +25,18 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody @Valid ScheduleRequestDto dto){
-        System.out.println(dto.getWriterId());
         return new ResponseEntity<>(scheduleService.createSchedule(dto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseDto>> findAllSchedules(
+    public PageResponseDto<ScheduleResponseDto> findAllSchedules(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "2") int size,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) LocalDate date
     ){
         FindSchedulesContext context = new FindSchedulesContext(page, size, userId, date);
-        return new ResponseEntity<>(scheduleService.findAllSchedules(context), HttpStatus.OK);
+        return new PageResponseDto<>(scheduleService.findAllSchedules(context));
     }
 
     @GetMapping("/{todoId}")
