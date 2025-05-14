@@ -1,9 +1,6 @@
 package com.example.schedule.controller;
 
-import com.example.schedule.dto.PasswordRequestDto;
-import com.example.schedule.dto.ScheduleRequestDto;
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.dto.FindSchedulesContext;
+import com.example.schedule.dto.*;
 import com.example.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -46,7 +43,7 @@ public class ScheduleController {
 
     @PutMapping("/{todoId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
-            @RequestBody ScheduleRequestDto dto, @PathVariable Long todoId
+            @RequestBody ScheduleUpdateRequestDto dto, @PathVariable Long todoId
     ){
         return new ResponseEntity<>(scheduleService.updateSchedule(dto, todoId), HttpStatus.OK);
     }

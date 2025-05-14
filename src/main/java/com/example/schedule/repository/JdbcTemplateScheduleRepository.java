@@ -2,6 +2,7 @@ package com.example.schedule.repository;
 
 import com.example.schedule.dto.ScheduleRequestDto;
 import com.example.schedule.dto.ScheduleResponseDto;
+import com.example.schedule.dto.ScheduleUpdateRequestDto;
 import com.example.schedule.entity.Todo;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -58,21 +59,21 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long todoId) {
+    public ScheduleResponseDto updateSchedule(ScheduleUpdateRequestDto dto, Long todoId) {
         String sql = "update schedule set todo = ?, writerName = ?, updatedAt = ? where todoId = ?";
         jdbcTemplate.update(sql, dto.getTodo(), dto.getWriterName(), LocalDateTime.now(), todoId);
         return findScheduleById(todoId);
     }
 
     @Override
-    public ScheduleResponseDto updateScheduleTodo(ScheduleRequestDto dto, Long todoId) {
+    public ScheduleResponseDto updateScheduleTodo(ScheduleUpdateRequestDto dto, Long todoId) {
         String sql = "update schedule set todo = ?, updatedAt = ? where todoId = ?";
         jdbcTemplate.update(sql, dto.getTodo(), LocalDateTime.now(), todoId);
         return findScheduleById(todoId);
     }
 
     @Override
-    public ScheduleResponseDto updateScheduleWriterName(ScheduleRequestDto dto, Long todoId) {
+    public ScheduleResponseDto updateScheduleWriterName(ScheduleUpdateRequestDto dto, Long todoId) {
         String sql = "update schedule set writerName = ?, updatedAt = ? where todoId = ?";
         jdbcTemplate.update(sql, dto.getWriterName(), LocalDateTime.now(), todoId);
         return findScheduleById(todoId);

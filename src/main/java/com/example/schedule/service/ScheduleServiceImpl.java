@@ -1,9 +1,6 @@
 package com.example.schedule.service;
 
-import com.example.schedule.dto.PasswordRequestDto;
-import com.example.schedule.dto.ScheduleRequestDto;
-import com.example.schedule.dto.ScheduleResponseDto;
-import com.example.schedule.dto.FindSchedulesContext;
+import com.example.schedule.dto.*;
 import com.example.schedule.entity.Todo;
 import com.example.schedule.exception.NotFoundException;
 import com.example.schedule.exception.PasswordMismatchException;
@@ -64,7 +61,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long todoId) {
+    public ScheduleResponseDto updateSchedule(ScheduleUpdateRequestDto dto, Long todoId) {
         if(!dto.getPassword().equals(scheduleRepository.findPasswordById(todoId))){
             throw new PasswordMismatchException("Password mismatch");
         }
