@@ -45,12 +45,15 @@ public class ScheduleServiceImpl implements ScheduleService{
         result = result.subList(pageOffset, pageOffset + context.getSize());
         int totalResult = result.size();
         int totalPages = (totalResult + context.getSize() - 1) / context.getSize(); // 전체 페이지 수 필요하면 사용
+        if(totalResult < context.getSize()){
+            return null;
+        }
         return result;
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
-        ScheduleResponseDto result = scheduleRepository.findScheduleById(id);
+    public ScheduleResponseDto findScheduleById(Long todoId) {
+        ScheduleResponseDto result = scheduleRepository.findScheduleById(todoId);
         if(result == null){
             throw new NotFoundException("Schedule not found or already deleted");
         } else{
@@ -59,30 +62,30 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long id) {
-        if(!dto.getPassword().equals(scheduleRepository.findPasswordById(id))){
+    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long todoId) {
+        if(!dto.getPassword().equals(scheduleRepository.findPasswordById(todoId))){
             throw new PasswordMismatchException("Password mismatch");
         }
         if(dto.getTodo() != null && dto.getWriterName() != null){
-            return scheduleRepository.updateSchedule(dto, id);
+            return scheduleRepository.updateSchedule(dto, todoId);
         }
         if(dto.getTodo() != null){
-            return scheduleRepository.updateScheduleTodo(dto, id);
+            return scheduleRepository.updateScheduleTodo(dto, todoId);
         }
         if(dto.getWriterName() != null){
-            return scheduleRepository.updateScheduleWriterName(dto, id);
+            return scheduleRepository.updateScheduleWriterName(dto, todoId);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Update contents does not exist");
     }
 
     @Override
-    public void deleteSchedule(PasswordRequestDto dto, Long id) {
-        if(!dto.getPassword().equals(scheduleRepository.findPasswordById(id)) && scheduleRepository.findScheduleById(id) != null){
+    public void deleteSchedule(PasswordRequestDto dto, Long todoId) {
+        if(!dto.getPassword().equals(scheduleRepository.findPasswordById(todoId)) && scheduleRepository.findScheduleById(todoId) != null){
             throw new PasswordMismatchException("Password mismatch");
         }
-        int deletedRow = scheduleRepository.deleteSchedule(id);
+        int deletedRow = scheduleRepository.deleteSchedule(todoId);
         if(deletedRow == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, id + "does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, todoId + "does not exist");
         }
     }
 }

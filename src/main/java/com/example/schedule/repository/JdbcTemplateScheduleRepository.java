@@ -51,43 +51,43 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
     }
 
     @Override
-    public ScheduleResponseDto findScheduleById(Long id) {
+    public ScheduleResponseDto findScheduleById(Long todoId) {
         String sql = "select * from schedule where todoId = ?";
-        List<ScheduleResponseDto> result = jdbcTemplate.query(sql, scheduleRowMapper(), id);
+        List<ScheduleResponseDto> result = jdbcTemplate.query(sql, scheduleRowMapper(), todoId);
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long id) {
+    public ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long todoId) {
         String sql = "update schedule set todo = ?, writerName = ?, updatedAt = ? where todoId = ?";
-        jdbcTemplate.update(sql, dto.getTodo(), dto.getWriterName(), LocalDateTime.now(), id);
-        return findScheduleById(id);
+        jdbcTemplate.update(sql, dto.getTodo(), dto.getWriterName(), LocalDateTime.now(), todoId);
+        return findScheduleById(todoId);
     }
 
     @Override
-    public ScheduleResponseDto updateScheduleTodo(ScheduleRequestDto dto, Long id) {
+    public ScheduleResponseDto updateScheduleTodo(ScheduleRequestDto dto, Long todoId) {
         String sql = "update schedule set todo = ?, updatedAt = ? where todoId = ?";
-        jdbcTemplate.update(sql, dto.getTodo(), LocalDateTime.now(), id);
-        return findScheduleById(id);
+        jdbcTemplate.update(sql, dto.getTodo(), LocalDateTime.now(), todoId);
+        return findScheduleById(todoId);
     }
 
     @Override
-    public ScheduleResponseDto updateScheduleWriterName(ScheduleRequestDto dto, Long id) {
+    public ScheduleResponseDto updateScheduleWriterName(ScheduleRequestDto dto, Long todoId) {
         String sql = "update schedule set writerName = ?, updatedAt = ? where todoId = ?";
-        jdbcTemplate.update(sql, dto.getWriterName(), LocalDateTime.now(), id);
-        return findScheduleById(id);
+        jdbcTemplate.update(sql, dto.getWriterName(), LocalDateTime.now(), todoId);
+        return findScheduleById(todoId);
     }
 
     @Override
-    public String findPasswordById(Long id){
+    public String findPasswordById(Long todoId){
         String sql = "select password from schedule where todoId = ?";
-        List<String> result = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("password"), id);
+        List<String> result = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("password"), todoId);
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
-    public int deleteSchedule(Long id) {
-        return jdbcTemplate.update("delete from schedule where todoId = ?", id);
+    public int deleteSchedule(Long todoId) {
+        return jdbcTemplate.update("delete from schedule where todoId = ?", todoId);
     }
 
     private RowMapper<ScheduleResponseDto> scheduleRowMapper(){

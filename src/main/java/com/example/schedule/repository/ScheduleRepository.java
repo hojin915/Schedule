@@ -9,10 +9,10 @@ import java.util.List;
 public interface ScheduleRepository{
     ScheduleResponseDto createSchedule(Todo todo);
     List<ScheduleResponseDto> findAllSchedules();
-    ScheduleResponseDto findScheduleById(Long id);
-    ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long id);
-    ScheduleResponseDto updateScheduleTodo(ScheduleRequestDto dto, Long id);
-    ScheduleResponseDto updateScheduleWriterName(ScheduleRequestDto dto, Long id);
-    String findPasswordById(Long id);
-    int deleteSchedule(Long id);
+    ScheduleResponseDto findScheduleById(Long todoId);
+    ScheduleResponseDto updateSchedule(ScheduleRequestDto dto, Long todoId);
+    ScheduleResponseDto updateScheduleTodo(ScheduleRequestDto dto, Long todoId);
+    ScheduleResponseDto updateScheduleWriterName(ScheduleRequestDto dto, Long todoId);
+    String findPasswordById(Long todoId);
+    int deleteSchedule(Long todoId);
 }

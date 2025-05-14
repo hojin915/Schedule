@@ -39,22 +39,22 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleService.findAllSchedules(context), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id){
-        return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+    @GetMapping("/{todoId}")
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long todoId){
+        return new ResponseEntity<>(scheduleService.findScheduleById(todoId), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{todoId}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(
-            @RequestBody ScheduleRequestDto dto, @PathVariable Long id
+            @RequestBody ScheduleRequestDto dto, @PathVariable Long todoId
     ){
-        return new ResponseEntity<>(scheduleService.updateSchedule(dto, id), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.updateSchedule(dto, todoId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{todoId}")
     public ResponseEntity<Void> deleteSchedule(
-            @RequestBody PasswordRequestDto dto, @PathVariable Long id){
-        scheduleService.deleteSchedule(dto, id);
+            @RequestBody @Valid PasswordRequestDto dto, @PathVariable Long todoId){
+        scheduleService.deleteSchedule(dto, todoId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
