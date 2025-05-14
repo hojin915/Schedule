@@ -33,7 +33,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     public List<ScheduleResponseDto> findAllSchedules(FindSchedulesContext context) {
         List<ScheduleResponseDto> result = scheduleRepository.findAllSchedules();
         if(context.getUserId() != null){
-            result = result.stream().filter(schedule -> schedule.getWriterId().equals(context.getUserId())).toList();
+            result = result.stream()
+                    .filter(schedule -> schedule.getWriterId().equals(context.getUserId()))
+                    .toList();
         }
         if(context.getDate() != null){
             result = result.stream()

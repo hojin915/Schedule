@@ -1,4 +1,6 @@
-﻿Use Schedule;
+﻿-- CREATE DATABASE Schedule;
+
+Use Schedule;
 
 CREATE TABLE `Schedule` (
 	`todoId`    INT	NOT NULL,
