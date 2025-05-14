@@ -1,6 +1,6 @@
 # Schedule
 
-Schedule 을 관리하기 위한 CRUD 기능  
+### Schedule 을 관리하기 위한 CRUD 기능  
 
 가능한 요청 목록  
 : -- 스케줄 관련 요청 --  
@@ -21,10 +21,10 @@ API Documentation:  https://documenter.getpostman.com/view/44617331/2sB2jAaTUz
 완료 후 ERD
 ![ERD](image/scheduleERD_complete.png)
 
-사용한 프레임워크
+사용한 프레임워크  
 : Spring Boot
 
-추가한 Dependencies (build.gradle)
+추가한 Dependencies (build.gradle)  
 :   implementation 'mysql:mysql-connector-java:8.0.28'  
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'  
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'  
